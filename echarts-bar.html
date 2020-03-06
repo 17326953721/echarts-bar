@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>柱状图常用配置</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin: 0;
+		}
+		body{
+			width: 100%;
+			height: 100%;
+		}
+		.box{
+			width: 100%;
+			height: 100%;
+			display: flex;
+			display: -webkit-flex;
+			justify-content:center;
+			align-items:center;
+		}
+		#bar{
+			width: 800px;
+			height: 400px;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div id="bar"></div>
+	</div>
+
+<script type="text/javascript" src="echarts.min.js"></script>
+<script type="text/javascript">
+	var charts = echarts.init(document.getElementById('bar'));
+	var option = {
+		title: {
+			text: "柱状图常用配置",
+			left: 'center',
+			link: 'https://www.echartsjs.com/zh/option.html#title.link',
+			target: 'blank'
+		},
+		animation: false,
+		grid: {
+			top: 50,
+			left: 20,
+			right: 40,
+			bottom: 20,
+			containLabel: true    //为true时图形的宽高可根据四个方向值定义，分别是图形的四个方向距离容器的值
+		},
+		tooltip: {
+			trigger: 'axis',                   //触发类型
+			axisPointer: {
+				type: 'cross',                 //添加标尺
+				crossStyle: {
+					color: '#999'
+				}
+			},
+			formatter: function(params) {      //提示文字回调函数
+				let list = []
+				let listItem = ''
+				for(let i = 0; i < params.length; i++) {
+					if(params[i].value > 0) {
+						list.push(`<p><i style="display: inline-block;width: 10px;height: 10px;background: ' + a[i].color + ';margin-right: 5px;border-radius: 50%;}"></i>
+						<span>${params[i].seriesName}:${params[i].value}</span></p>`)
+					}
+				}
+				listItem = list.join(' ');
+				return '<div class="showBox">' + listItem + '</div>'
+				console.log(params)
+			}
+		},
+		xAxis: {
+			show: true,   //是否显示X轴
+			position: 'bottom',   //x轴在上面还是下面
+			offset: 5,    //x轴文字跟轴线的距离
+			type: 'category',     //坐标轴类型
+			name: '名称',    //x轴轴线名称
+			nameLocation: 'end',   //轴线名称显示位置
+			nameTextStyle: {    //轴线名称样式
+				color: 'red',
+				fontSize: 12
+			},
+			nameGap: 10,    //轴线名称距离轴线的距离
+			nameRotate: 0,  //轴线名称旋转角度
+			boundaryGap: true,
+			axisLine: {     //轴线设置
+				show: true,  //是否显示轴线
+				symbol: ['none', 'arrow'],     //给轴线加上箭头，数组两个分别代表两端
+				symbolSize: [10, 12],          //剪头大小，第一个为宽度，第二个为高度
+				lineStyle: {                   //x轴线样式
+					color: '#F2719A'           
+				}
+			},
+			axisTick: {       //x轴上刻度设置
+				alignWithLabel: true,   //改变刻度以及标签显示位置
+				show: true,   //是否显示x轴上刻度
+				interval: 'auto',   //x轴怎么显示刻度，  auto为自适应   0为显示全部数据    1...表示从数组里隔一个数据显示一个数据
+				inside: false,     //刻度朝向  false是朝外
+				lineStyle: {        //x轴刻度样式
+					color: '#F2719A'           
+				}
+			},
+			axisLabel: {   //刻度文字设置
+				show: true,
+				color: '#5085F2',
+				rotate: 0,
+				fontSize: 12,
+				formatter: (params, index) => {    //文字显示回调,可以格式化X轴对应文字显示
+					// params是每个数据点     index是对应的下标
+					let str = ''
+			        if (params.length > 14) {
+			          str = params.substr(0, 14) + '\n' + params.substr(14, params.length);
+			        } else {
+			          str = params
+			        }
+			        return str
+				}
+			},
+			splitLine: {   //x、y轴背景轴线
+				show: false,        //是否显示背景网格线 
+				interval: 'auto',   //和刻度相似，网格线怎么显示
+				lineStyle: {        //网格线样式
+					color: 'rgba(0, 0, 0, .1)'
+				}
+			},
+			data: ['赛文', '杰克', '艾斯', '泰罗', '雷欧', '阿斯特拉', '爱迪', '佐菲', '奥特之王']    //x轴数据
+		},
+		yAxis: {
+	        type: 'value',
+	        name: '打怪兽数量',    //x轴轴线名称
+			nameLocation: 'end',   //轴线名称显示位置
+			nameTextStyle: {    //轴线名称样式
+				color: 'red',
+				fontSize: 12
+			},
+			nameGap: 10,    //轴线名称距离轴线的距离
+			min: 0,         //最小值
+			max: 40,        //最大值 
+			splitNumber: 5,   //空隙间隔 
+	        splitLine: {   //x、y轴背景轴线
+				show: false,        //是否显示背景网格线 
+			},
+			axisLine: {     //轴线设置
+				show: true,  //是否显示轴线
+				symbol: ['none', 'arrow'],     //给轴线加上箭头，数组两个分别代表两端
+				symbolSize: [10, 12],          //剪头大小，第一个为宽度，第二个为高度
+				lineStyle: {                   //x轴线样式
+					color: '#5085F2'           
+				}
+			},
+	    },
+	    series: [{
+	    	type: 'bar',   //什么类型的图表
+	    	name: '打怪兽数量',       //系列名称，用于tooltip的显示
+	    	label: {     //图表上的显示标签
+	    		show: true,   //是否显示标签，默认不显示
+	    		position: 'insideTop',     //提示文字标签的位置
+	    		distance: 10,   //标签距离图形的位置
+	    		color: 'yellow',
+	    		fontSize: 14
+	    	},
+	    	barWidth: 20,   //柱状图宽度 
+	    	cursor: 'pointer',  //鼠标形状
+	    	barGap: '35%',      //柱与柱之间的间隔，根据柱状的宽度百分比
+	    	markPoint: {
+	    		symbol: 'dataURI'
+	    	},
+	    	itemStyle: {          //柱状图样式
+	    		normal: {         //默认状态下样式 
+	    			color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{     //柱状图颜色，渐变色，可直接设置单色
+		                offset: 0,
+		                color: "white" // 0% 处的颜色
+		            }, {
+		                offset: 1,
+		                color: "red" // 100% 处的颜色
+		            }], false),
+		    		opacity: .8,        //柱状图透明度
+		    		barBorderRadius: [10, 10, 0, 0],      //柱状图圆角
+	    		}
+	    	},
+	    	data: [18, 20, 15, 30, 19, 23, 17, 25, 13]
+	    },{
+	    	type: 'bar',   //什么类型的图表
+	    	name: '打架次数',
+	    	stack: '叠加',    //叠加显示柱状图
+	    	barWidth: 20,  
+	    	cursor: 'pointer',  //鼠标形状
+			itemStyle: {
+				normal: {
+					color: '#FFA62C',
+					barBorderRadius: [0, 0, 0, 0],
+				}
+			},
+			label: {     //图表上的显示标签
+	    		show: true,   //是否显示标签，默认不显示
+	    		position: 'insideTop',     //提示文字标签的位置
+	    		distance: 10,   //标签距离图形的位置
+	    		color: 'yellow',
+	    		fontSize: 14
+	    	},
+	    	data: [5, 8, 6, 10, 4, 5, 6, 3, 9]
+	    },{
+	    	type: 'bar',
+	    	name: '迟到次数',
+	    	stack: '叠加',
+	    	barWidth: 20,
+	    	cursor: 'pointer',  //鼠标形状
+			itemStyle: {
+				normal: {
+					color: '#F2719A',
+					barBorderRadius: [10, 10, 0, 0],
+				}
+			},
+			label: {
+	    		show: true,
+	    		position: 'insideTop',
+	    		distance: 10,
+	    		color: 'yellow',
+	    		fontSize: 14
+	    	},
+	    	data: [11, 6, 12, 10, 16, 15, 12, 17, 9]
+	    }]
+	};
+	charts.setOption(option)
+</script>
+</body>
+</html>
